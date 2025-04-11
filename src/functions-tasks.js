@@ -50,8 +50,8 @@ function getFunctionBody(func) {
  *  ]) => [0, 1, 2]
  *
  */
-function getArgumentsCount(/* funcs */) {
-  throw new Error('Not implemented');
+function getArgumentsCount(funcs) {
+  return funcs.map((func) => func.length);
 }
 
 /**
@@ -183,8 +183,15 @@ function retry(func, attempts) {
  * cos(3.141592653589793) ends
  *
  */
-function logger(/* func, logFunc */) {
-  throw new Error('Not implemented');
+function logger(func, logFunc) {
+  return (...args) => {
+    const funcName = func.name;
+    const argsString = args.map((arg) => JSON.stringify(arg)).join(',');
+    logFunc(`${funcName}(${argsString}) starts`);
+    const result = func.apply(this, args);
+    logFunc(`${funcName}(${argsString}) ends`);
+    return result;
+  };
 }
 
 /**
